@@ -18,6 +18,7 @@ package android.example.com.squawker;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.example.com.squawker.fcm.SquawkFirebaseInstanceIdService;
 import android.example.com.squawker.following.FollowingPreferenceActivity;
 import android.example.com.squawker.provider.SquawkContract;
 import android.example.com.squawker.provider.SquawkProvider;
@@ -35,6 +36,8 @@ import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.iid.FirebaseInstanceId;
 
 public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
@@ -103,6 +106,8 @@ public class MainActivity extends AppCompatActivity implements
         // TODO (3) Here, in MainActivity, get a token using FirebaseInstanceId.getInstance().getToken()
         // TODO (4) Get the message from that token and print it in a log statement
 
+        SquawkFirebaseInstanceIdService instanceIdService = new SquawkFirebaseInstanceIdService();
+        instanceIdService.onTokenRefresh();
 
     }
 
