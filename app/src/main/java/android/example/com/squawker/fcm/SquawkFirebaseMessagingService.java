@@ -1,6 +1,10 @@
 package android.example.com.squawker.fcm;
 
+import android.content.ContentValues;
+import android.example.com.squawker.provider.SquawkContract;
+import android.example.com.squawker.provider.SquawkProvider;
 import android.example.com.squawker.utilities.NotificationUtils;
+import android.os.AsyncTask;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -9,6 +13,10 @@ import java.util.Map;
 public class SquawkFirebaseMessagingService extends FirebaseMessagingService {
 
 
+    private static final String JSON_KEY_AUTHOR = SquawkContract.COLUMN_AUTHOR;
+    private static final String JSON_KEY_AUTHOR_KEY = SquawkContract.COLUMN_AUTHOR_KEY;
+    private static final String JSON_KEY_MESSAGE = SquawkContract.COLUMN_MESSAGE;
+    private static final String JSON_KEY_DATE = SquawkContract.COLUMN_DATE;
     // TODO (1) Make a new Service in the fcm package that extends from FirebaseMessagingService.
     // TODO (2) As part of the new Service - Override onMessageReceived.
 
@@ -38,5 +46,32 @@ public class SquawkFirebaseMessagingService extends FirebaseMessagingService {
         Map<String, String> data = remoteMessage.getData();
         NotificationUtils.triggerNewNotification(this, data);
 
+        insertSquawk(data);
+    }
+
+
+    /**
+     * Inserts a single squawk into the database;
+     *
+     * @param data Map which has the message data in it
+     */
+    private void insertSquawk(final Map<String, String> data) {
+
+        // Database operations should not be done on the main thread
+        AsyncTask<Void, Void, Void> insertSquawkTask = new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                ContentValues newMessage = new ContentValues();
+                newMessage.put(SquawkContract.COLUMN_AUTHOR, data.get(JSON_KEY_AUTHOR));
+                newMessage.put(SquawkContract.COLUMN_MESSAGE, data.get(JSON_KEY_MESSAGE).trim());
+                newMessage.put(SquawkContract.COLUMN_DATE, data.get(JSON_KEY_DATE));
+                newMessage.put(SquawkContract.COLUMN_AUTHOR_KEY, data.get(JSON_KEY_AUTHOR_KEY));
+                getContentResolver().insert(SquawkProvider.SquawkMessages.CONTENT_URI, newMessage);
+                return null;
+            }
+        };
+
+        insertSquawkTask.execute();
     }
 }

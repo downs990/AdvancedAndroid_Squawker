@@ -36,7 +36,7 @@ public class NotificationUtils {
 
 
         String author = data.get("author");
-        String message = data.get("message").substring(0, 30);
+        String message = data.get("message").substring(0, 60);
 
 
         // NOTE: Get the NotificationManager using context.getSystemService
