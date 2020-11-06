@@ -1,5 +1,7 @@
 package android.example.com.squawker.fcm;
 
+import android.example.com.squawker.utilities.NotificationUtils;
+
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import java.util.Map;
@@ -15,6 +17,7 @@ public class SquawkFirebaseMessagingService extends FirebaseMessagingService {
     // the keys and do two things with it :
     // 1. Display a notification with the first 30 character of the message
     // 2. Use the content provider to insert a new message into the local database
+
     // Hint: You shouldn't be doing content provider operations on the main thread.
     // If you don't know how to make notifications or interact with a content provider
     // look at the notes in the classroom for help.
@@ -33,8 +36,7 @@ public class SquawkFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
         Map<String, String> data = remoteMessage.getData();
-        String author = data.get("author");
-
+        NotificationUtils.triggerNewNotification(this, data);
 
     }
 }
