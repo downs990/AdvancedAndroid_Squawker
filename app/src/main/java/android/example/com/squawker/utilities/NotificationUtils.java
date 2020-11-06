@@ -12,6 +12,7 @@ import android.example.com.squawker.R;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
+
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
@@ -34,11 +35,8 @@ public class NotificationUtils {
     public static void triggerNewNotification(Context context, Map<String, String> data) {
 
 
-
-
         String author = data.get("author");
         String message = data.get("message").substring(0, 30);
-
 
 
         // NOTE: Get the NotificationManager using context.getSystemService
@@ -74,14 +72,14 @@ public class NotificationUtils {
 //                                context.getString(R.string.charging_reminder_notification_body)
 //                        ))
                         .setDefaults(Notification.DEFAULT_VIBRATE)
-                        .setContentIntent(contentIntent(context ))
+                        .setContentIntent(contentIntent(context))
                         .setAutoCancel(true);
 
 
         // NOTE: If the build version is greater than or equal to JELLY_BEAN and less than OREO,
         // set the notification's priority to PRIORITY_HIGH.
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN
-                && Build.VERSION.SDK_INT < Build.VERSION_CODES.O){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN
+                && Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
 
             notificationBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
         }
@@ -119,7 +117,7 @@ public class NotificationUtils {
 
     // NOTE: Create a helper method called largeIcon which takes in a Context as a parameter and
     // returns a Bitmap. This method is necessary to decode a bitmap needed for the notification.
-    private static Bitmap largeIcon(Context context){
+    private static Bitmap largeIcon(Context context) {
         // NOTE: Get a Resources object from the context.
         Resources res = context.getResources();
         // NOTE: Create and return a bitmap using BitmapFactory.decodeResource, passing in the
@@ -127,9 +125,6 @@ public class NotificationUtils {
         Bitmap largeIcon = BitmapFactory.decodeResource(res, R.drawable.ic_duck);
         return largeIcon;
     }
-
-
-
 
 
 }
