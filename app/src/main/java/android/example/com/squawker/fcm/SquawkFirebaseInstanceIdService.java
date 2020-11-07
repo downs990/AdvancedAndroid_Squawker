@@ -16,7 +16,6 @@
 package android.example.com.squawker.fcm;
 
 import android.util.Log;
-
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
